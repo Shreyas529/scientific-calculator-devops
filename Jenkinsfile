@@ -33,7 +33,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Build Docker image
-                sh 'docker build -t shreyas529/scientific-calculator:latest .'
+                sh 'docker build -t terminator29/scientific-calculator:latest .'
             }
         }
 
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 // Push Docker image to Docker Hub using stored credentials
                 withDockerRegistry([credentialsId: 'dockerhub-creds', url: '']) {
-                    sh 'docker push shreyas529/scientific-calculator:latest'
+                    sh 'docker push terminator29/scientific-calculator:latest'
                 }
             }
         }
