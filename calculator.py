@@ -19,7 +19,8 @@ def menu():
         print("2. Factorial (!x)")
         print("3. Natural Logarithm (ln(x))")
         print("4. Power (x^b)")
-        print("5. Exit")
+        print("5. Square (x^2)")
+        print("6. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -37,6 +38,9 @@ def menu():
             b = float(input("Enter exponent: "))
             print("{}^{} = {}".format(x, b, power(x, b)))
         elif choice == '5':
+            x = float(input("Enter number: "))
+            print("{}^2 = {}".format(x, power(x, 2)))
+        elif choice == '6':
             print("Exiting...")
             break
         else:
