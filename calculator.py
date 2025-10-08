@@ -23,7 +23,7 @@ def menu():
         print("6. Cube (x^3)")
         print("7. Exit")
 
-        choice = input("Enter your choice: ")
+        choice = input("Enter your choice for operation: ")
 
         if choice == '1':
             x = float(input("Enter number: "))
