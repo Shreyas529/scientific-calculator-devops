@@ -1,54 +1,37 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKERHUB_CRED = credentials('dockerhub-creds') // Docker Hub credentials stored in Jenkins
-    }
-
     stages {
-
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                // Checkout your main branch from GitHub
-                git branch: 'main', 
-                    url: 'https://github.com/Shreyas529/scientific-calculator-devops.git', 
-                    credentialsId: 'github-creds'
+                git 'https://github.com/Shreyas529/Calculator-Devops.git'
             }
         }
-
         stage('Install Dependencies') {
             steps {
-                // Install Python dependencies
-                sh 'pip install --user -r requirements.txt'
+                sh 'pip install -r requirements.txt'
             }
         }
-
         stage('Run Tests') {
             steps {
-                // Add local bin to PATH so pytest is found
-                sh 'export PATH=$PATH:/var/lib/jenkins/.local/bin && pytest'
+                sh 'pytest --maxfail=1 --disable-warnings -q'
             }
         }
-
         stage('Build Docker Image') {
             steps {
-                // Build Docker image
                 sh 'docker build -t terminator29/scientific-calculator:latest .'
             }
         }
-
         stage('Push to DockerHub') {
             steps {
-                // Push Docker image to Docker Hub using stored credentials
-                withDockerRegistry([credentialsId: 'dockerhub-creds', url: '']) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
                     sh 'docker push terminator29/scientific-calculator:latest'
                 }
             }
         }
-
         stage('Deploy with Ansible') {
             steps {
-                // Run your Ansible playbook to deploy container
                 sh 'ansible-playbook -i ansible/hosts.ini ansible/deploy.yml'
             }
         }
@@ -56,10 +39,27 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            emailext (
+                to: 'youremail@gmail.com',
+                subject: "✅ Jenkins Job '${env.JOB_NAME}' Success",
+                body: """<p>Good news!</p>
+                <p>The Jenkins job <b>${env.JOB_NAME}</b> completed successfully.</p>
+                <p>Build number: ${env.BUILD_NUMBER}</p>
+                <p>Git commit: ${env.GIT_COMMIT}</p>
+                <p>See details: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
+                mimeType: 'text/html'
+            )
         }
         failure {
-            echo 'Pipeline failed. Check console output for errors.'
+            emailext (
+                to: 'youremail@gmail.com',
+                subject: "❌ Jenkins Job '${env.JOB_NAME}' Failed",
+                body: """<p>Uh oh!</p>
+                <p>The Jenkins job <b>${env.JOB_NAME}</b> failed.</p>
+                <p>Build number: ${env.BUILD_NUMBER}</p>
+                <p>See details: <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>""",
+                mimeType: 'text/html'
+            )
         }
     }
 }
