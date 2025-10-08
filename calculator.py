@@ -20,8 +20,8 @@ def menu():
         print("3. Natural Logarithm (ln(x))")
         print("4. Power (x^b)")
         print("5. Square (x^2)")
-        print("6. Cube (x^3)")
-        print("7. Exit")
+        # print("6. Cube (x^3)")
+        print("6. Exit")
 
         choice = input("Enter your choice for operation: ")
 
@@ -41,10 +41,10 @@ def menu():
         elif choice == '5':
             x = float(input("Enter number: "))
             print("{}^2 = {}".format(x, power(x, 2)))
+        # elif choice == '6':
+        #     x = float(input("Enter number: "))
+        #     print("{}^3 = {}".format(x, power(x, 3)))
         elif choice == '6':
-            x = float(input("Enter number: "))
-            print("{}^3 = {}".format(x, power(x, 3)))
-        elif choice == '7':
             print("Exiting...")
             break
         else:
