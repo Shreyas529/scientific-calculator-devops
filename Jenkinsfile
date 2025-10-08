@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/Shreyas529/Calculator-Devops.git'
+                git 'https://github.com/Shreyas529/scientific-calculator-devops.git'
             }
         }
         stage('Install Dependencies') {
@@ -40,7 +40,7 @@ pipeline {
     post {
         success {
             emailext (
-                to: 'youremail@gmail.com',
+                to: 'shreyasarun23@gmail.com',
                 subject: "✅ Jenkins Job '${env.JOB_NAME}' Success",
                 body: """<p>Good news!</p>
                 <p>The Jenkins job <b>${env.JOB_NAME}</b> completed successfully.</p>
@@ -52,7 +52,7 @@ pipeline {
         }
         failure {
             emailext (
-                to: 'youremail@gmail.com',
+                to: 'shreyasarun23@gmail.com',
                 subject: "❌ Jenkins Job '${env.JOB_NAME}' Failed",
                 body: """<p>Uh oh!</p>
                 <p>The Jenkins job <b>${env.JOB_NAME}</b> failed.</p>
