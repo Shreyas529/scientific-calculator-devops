@@ -4,9 +4,10 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/Shreyas529/scientific-calculator-devops.git'
+                git branch: 'main', url: 'https://github.com/Shreyas529/scientific-calculator-devops.git'
             }
         }
+
         stage('Install Dependencies') {
             steps {
                 sh 'pip install -r requirements.txt'
