@@ -45,18 +45,15 @@ pipeline {
 
     post {
         success {
-            emailext(
-                subject: "✅ SUCCESS: Scientific Calculator Pipeline",
-                body: "The Jenkins pipeline completed successfully.",
-                to: "shreyasarun23@gmail.com"
-            )
+            mail to: 'shreyasarun23@gmail.com',
+                subject: "Build Success",
+                body: "Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} succeeded"
         }
+
         failure {
-            emailext(
-                subject: "❌ FAILURE: Scientific Calculator Pipeline",
-                body: "The Jenkins pipeline failed. Check logs for details.",
-                to: "shreyasarun23@gmail.com"
-            )
+            mail to: 'shreyasarun23@gmail.com',
+                subject: "Build Failed",
+                body: "Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} failed. Please check the Jenkins console output for details."
         }
     }
 }
