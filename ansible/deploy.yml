@@ -1,18 +1,19 @@
 - name: Deploy Scientific Calculator
-  hosts: local
+  hosts: localhost
+  connection: local
   gather_facts: yes
-  become: false        # <-- ensure no sudo/become is attempted
+  become: false
+
   tasks:
-    - name: Pull Docker image
+    - name: Pull latest Docker image
       community.docker.docker_image:
         name: "terminator29/scientific-calculator:latest"
         source: pull
 
-    - name: Run container
+    - name: Run Scientific Calculator container
       community.docker.docker_container:
         name: scientific-calculator
         image: "terminator29/scientific-calculator:latest"
         state: started
         interactive: yes
         tty: yes
-      # become: true
